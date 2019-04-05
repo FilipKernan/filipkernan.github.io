@@ -6,15 +6,19 @@ body{
 
 }
 header{
+  width: 100%;
   margin: 0;
-  display: inline;
+
   padding: 15px 15px 10px 15px;
   background:#5D5C61;
+
+
 }
 header h1{
   display: inline;
   margin: 0;
   padding: 0;
+  width: 100px;
 
 }
 
@@ -34,14 +38,14 @@ nav ul li{
   margin: 0;
   display: inline-block;
   list-style: none;
-  padding: 5px;
+  padding: 5px 20px 5px 20px;
   margin: 5px;
-  background: #5D5C61;
+  background: #7527c4;
   border-radius: 5px;
 }
 
-a {
-  color:blue;
+header a {
+  color:white;
 }
 
 footer{
