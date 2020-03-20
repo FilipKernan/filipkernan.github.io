@@ -1,63 +1,100 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>Filip Kernan</title>
-    <link href="../styles/main.css" rel="stylesheet">
-  </head>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
 
-  <body>
-    <header>
-      <h1>Filip Kernan</h1>
-      <nav>
-        <ul>
-          <li><a href="../../index.html">Home</a></li>
-          <li><a href="resumes.html">Resumes</a></li>
-          <li><a href="classList.html">Classes Taken</a></li>
-          <li><a href="projects.html">Projects</a></li>
-        </ul>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" lang="en"/>
+<title></title>
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<link href="http://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet" />
+<link href="../../default.css" rel="stylesheet" type="text/css" media="all" />
+<link href="../../fonts.css" rel="stylesheet" type="text/css" media="all" />
+<script type="text/javascript" src="classList.json"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>  //first add an event listener for page load
 
-      </nav>
-    </header>
 
-  <div>
-    <h2>Class List</h2>
-    <input type="text" id="classInput" onkeyup="searchClasses()"
-    placeholder="Search for classes..">
-    <table id="Classes">
-      <tr class="header">
-        <th style="width:20%">Class Name</th>
-        <th style="width:20%">Class Number</th>
-        <th style="width:20%">Department</th>
-        <th style="width:20%">Year Taken</th>
-        <th style="width:20%">Term Taken</th>
-      </tr><!--> fill this out </!-->
-      <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-      <tr></tr>
-      <tr></tr>
-      <tr></tr>
-      <tr></tr>
-      <tr></tr>
-      <tr></tr>
-      <tr></tr>
-      <tr></tr>
-      <tr></tr>
-      <tr></tr>
-      <tr></tr>
-    </table>
+
+  //this function is in the event listener and will execute on page load
+  function get_json_data(){
+      // Relative URL of external json file
+            // Parse JSON string into object
+            console.log(classList);
+            append_json(classList);
+
+
+
+
+      //Build the XMLHttpRequest (aka AJAX Request)
+
+  }
+
+  //this function appends the json data to the table 'Classes'
+  function append_json(data){
+      var table = document.getElementById('Classes');
+      data.class.forEach(function(object) {
+          var tr = document.createElement('tr');
+          tr.innerHTML = "<td class='column1 tableAlign'>" + object.className + '</td>' +
+          "<td class='column2 tableAlign'>" + object.classDepartment + '</td>' +
+          "<td class='column3 tableAlign'>" + object.classYearTaken + '</td>' +
+          "<td class='column4 tableAlign'>" + object.classTermTaken + '</td>';
+          table.appendChild(tr);
+      });
+  }</script>
+
+
+  <body onload="get_json_data();">
+    <div id="wrapper1">
+    	<div id="header-wrapper">
+    		<div id="header" class="container">
+    			<div id="logo"> <span class="icon icon-cogs"></span>
+    				<h1><a href="#">Filip Kernan</a></h1>
+    			<div id="menu">
+    				<ul>
+    					<li><a href="../../index.html" accesskey="1" title="">Homepage</a></li>
+    					<li><a href="src/html/projects.html" title="">Projects</a></li>
+    					<li class="current_page_item"><a href="#" title="">Class Taken</a></li>
+    					<li><a href="src/html/work.html" title="">Past Employment</a></li>
+    				</ul>
+    			</div>
+    		</div>
+    	</div>
+    </div>
   </div>
-    <footer>
-        Filip Kernan,<br>
-        Computer Science and Robotics Engineering Student at WPI<br>
-        <a href="https://www.linkedin.com/in/filipkernan/">LinkedIn</a><br>
-        <a href="fskernan@wpi.edu">fskernan@wpi.edu</a><br>
-        <a href="617-816-1869">617-816-1869</a>
-    </footer>
+
+
+  <div id="wrapper3">
+    <h2>Class List</h2>
+
+    <table id="Classes">
+      <tr >
+        <th class="column1">Class Name</th>
+        <th class="column2">Department</th>
+        <th class="column3">Year Taken</th>
+        <th class="column4">Term Taken</th>
+      </tr>
+
+    </table>
+
+  </div>
+
+
+  <div id="wrapper4">
+    <div id="footer" class="container wrapper1">
+      <div class="title">
+        <h2>Get in touch</h2>
+        <span class="byline">Phasellus nec erat sit amet nibh pellentesque congue</span> </div>
+      <ul class="contact">
+        <li><a href="#" class="icon icon-github"><span>Github</span></a></li>
+        <li><a href="#" class="icon icon-linkedin"><span>LinkedIn</span></a></li>
+        <li><a href="#" class="icon icon-instagram"><span>Instagram</span></a></li>
+
+      </ul>
+    </div>
+    <div id="copyright" class="container">
+      <p>&copy; Untitled. All rights reserved. | Photos by <a href="http://fotogrph.com/">Fotogrph</a> | Design by <a href="http://templated.co" rel="nofollow">TEMPLATED</a>.</p>
+    </div>
+  </div>
   </body>
 
 </html>
