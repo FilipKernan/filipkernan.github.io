@@ -1,8 +1,3 @@
-
-<!-- make index of Projects
-     make template of project details page-->
-
-
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -14,7 +9,7 @@
 <link href="http://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet" />
 <link href="../../default.css" rel="stylesheet" type="text/css" media="all" />
 <link href="../../fonts.css" rel="stylesheet" type="text/css" media="all" />
-<script type="text/javascript" src="projectList.json"></script>
+<script type="text/javascript" src="workList.json"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>  //first add an event listener for page load
 
@@ -24,10 +19,8 @@
   function get_json_data(){
       // Relative URL of external json file
             // Parse JSON string into object
-            console.log(projectList);
-            
-
-            append_json(projectList);
+            console.log(workList);
+            append_json(workList);
 
 
 
@@ -38,16 +31,14 @@
 
   //this function appends the json data to the table 'Classes'
   function append_json(data){
-      var table = document.getElementById('Projects');
-      data.project.forEach(function(object) {
+      var table = document.getElementById('Past Employment');
+      data.jobs.forEach(function(object) {
           var tr = document.createElement('tr');
-          var completedString = "Active";
-          if (object.completed) {
-            completedString = "Completed";
-          }
-          tr.innerHTML = "<td class='column1 tableAlign'>" + object.projectName + '</td>' +
-          "<td class='column2 tableAlign'>" + completedString + '</td>' +
-          "<td class='column3 tableAlign'>" + "<a href = '" + object.link + "'>See more</a></td>";
+          tr.innerHTML = "<td class='column1 tableAlign' style='float: none;'>" + object.JobTitle + '</td>' +
+          "<td class='column2 tableAlign' style='float: none;'>" + object.PoE + '</td>' +
+          "<td class='column3 tableAlign' style='float: none;'>" + object.SDate + '</td>' +
+          "<td class='column4 tableAlign' style='float: none;'>" + object.EDate + '</td>' +
+          "<td class='column5 tableAlign'>" + object.Resp + '</td>';
           table.appendChild(tr);
       });
   }</script>
@@ -62,9 +53,9 @@
     			<div id="menu">
     				<ul>
     					<li><a href="../../index.html" accesskey="1" title="">Homepage</a></li>
-    					<li class="current_page_item"><a href="#" title="">Projects</a></li>
-    					<li><a href="classList.html" title="">Classes Taken</a></li>
-    					<li><a href="work.html" title="">Past Employment</a></li>
+              <li><a href="projects.html" title="">Projects</a></li>
+              <li><a href="classList.html" title="">Classes Taken</a></li>
+    					<li class="current_page_item"><a href="#" title="">Past Employment</a></li>
     				</ul>
     			</div>
     		</div>
@@ -74,13 +65,15 @@
 
 
   <div id="wrapper3" style="text-align: center;">
-    <h2>Project List</h2>
+    <h2>Past Jobs</h2>
 
-    <table id="Projects" style="margin: 0px auto";>
-      <tr><!-- The format for this should really be name, picture, paragraph, github link if applicable-->
-        <th class="column1">Project Name</th>
-        <th class="column2">Active/Completed</th>
-        <th class="column3">Link</th>
+    <table id="Past Employment" style="margin: 0px auto";>
+      <tr>
+        <th class="column1">Job title</th>
+        <th class="column2" style="float: none;">Place of Employment</th>
+        <th class="column3" style="float: none;">Start Date</th>
+        <th class="column4" style="float: none;">End Date</th>
+        <th class="column5">Responsibilities</th>
       </tr>
       
     </table>
@@ -92,18 +85,20 @@
     <div id="footer" class="container wrapper1">
       <div class="title">
         <h2>Get in touch</h2>
-        <span class="byline">Phasellus nec erat sit amet nibh pellentesque congue</span> </div>
+        <span class="byline">Life before death, Strength before weakness, Journey before destination</span> </div>
       <ul class="contact">
         <li><a href="#" class="icon icon-github"><span>Github</span></a></li>
         <li><a href="#" class="icon icon-linkedin"><span>LinkedIn</span></a></li>
-        <li><a href="#" class="icon icon-instagram"><span>Instagram</span></a></li>
+        <!-- <li><a href="#" class="icon icon-instagram"><span>Instagram</span></a></li> -->
 
       </ul>
     </div>
     <div id="copyright" class="container">
-      <p>&copy; Untitled. All rights reserved. | Photos by <a href="http://fotogrph.com/">Fotogrph</a> | Design by <a href="http://templated.co" rel="nofollow">TEMPLATED</a>.</p>
+      <p>Photos by <a href="http://fotogrph.com/">Fotogrph</a> | Design by <a href="http://templated.co" rel="nofollow">TEMPLATED</a>.</p>
     </div>
   </div>
   </body>
 
 </html>
+Get in touch
+Phasellus Nec Erat Sit Amet Nibh Pellentesque Congue

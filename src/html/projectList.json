@@ -1,0 +1,28 @@
+projectList = {
+    "project": [
+        {
+            "projectName": "Operational BB-8", "completed" : false,
+             "link" : "/projects/bb-8.html" 
+        },
+        {
+            "projectName": "Mandalorian Suit", "completed" : false,
+             "link" : "/projects/mando.html" 
+        },
+        {
+            "projectName": "RBE 2001 final project", "completed" : true,
+             "link" : "/projects/rbe2001.html" 
+        },
+        {
+            "projectName": "RBE 2002 final project", "completed" : true,
+             "link" : "/projects/rbe2002.html" 
+        },
+        {
+            "projectName": "Battle of the Rockets PCB", "completed" : true,
+             "link" : "/projects/bor.html" 
+        },
+        {
+            "projectName": "FPGA Dice Roller", "completed" : true,
+             "link" : "/projects/dice.html" 
+        }
+    ]
+}

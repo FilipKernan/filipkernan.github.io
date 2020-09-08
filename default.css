@@ -632,10 +632,11 @@
 	.column1,
 	.column2,
 	.column3,
-	.column4
+	.column4,
+	.column5
 	{
 		padding-top: 15px;
-		width: 282px;
+		width: 280px;
 	}
 
 	.column1,

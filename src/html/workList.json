@@ -1,0 +1,16 @@
+workList = {
+    "jobs": [
+        {
+            "JobTitle": "Fullstack Developer Intern",  
+            "PoE": "Clinical ReseachIO", 
+            "SDate": "June 2019", "EDate": "Aug 2019", 
+            "Resp": "Decreased loading times thought query optimization, Built front-end display of new product, Replaced google maps API with open-source variant"
+        }, 
+        {
+            "JobTitle": "Software QA Intern",  
+            "PoE": "Desktop Metal", 
+            "SDate": "Jun 2018", "EDate": "Aug 2018", 
+            "Resp": "Performed quality assurance on a commercial high-availability web-based system, Created maintainable test scripts that ran on an on-commit and nightly basis, Gathered empirical data on the 3D prints to help my team understand gaps in system performance"
+        } 
+    ]
+}
