@@ -207,6 +207,25 @@
 
 	ul.style1
 	{
+		margin: 10px;
+
+	}
+
+	ul.style1 li
+	{
+		padding: 10px;
+	}
+
+	ul.style2
+	{
+		margin: 10px;
+
+	}
+
+	ul.style2 li
+	{
+		float: left;
+		padding: 5px;
 	}
 
 

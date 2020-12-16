@@ -36,6 +36,56 @@ classList = {
       "classYearTaken": "2018-2019", "classTermTaken": "D"},
     {"className": "The British Empire",
       "classNumber": "HI2324", "classDepartment": "History",
-      "classYearTaken": "2018-2019", "classTermTaken": "D"}
+      "classYearTaken": "2018-2019", "classTermTaken": "D"},
+
+
+
+    {"className": "Introduction to Statics",
+      "classNumber": "ES2501", "classDepartment": "Engineering Science",
+      "classYearTaken": "2019-2020", "classTermTaken": "A"},
+
+    {"className": "Unified Robotics 1: Actuation",
+      "classNumber": "RBE2001", "classDepartment": "Robotics Engineering",
+      "classYearTaken": "2019-2020", "classTermTaken": "A"},
+
+    {"className": "Intro to the History of Science and Technology",
+      "classNumber": "HI1330", "classDepartment": "History",
+      "classYearTaken": "2019-2020", "classTermTaken": "A"},
+
+    {"className": "Software Engineering",
+      "classNumber": "CS3733", "classDepartment": "Computer Science",
+      "classYearTaken": "2019-2020", "classTermTaken": "B"},
+
+    {"className": "Linear Algebra",
+      "classNumber": "MA2071", "classDepartment": "Math",
+      "classYearTaken": "2019-2020", "classTermTaken": "B"},
+
+    {"className": "Elements of Writing",
+      "classNumber": "WR1010", "classDepartment": "Writing",
+      "classYearTaken": "2019-2020", "classTermTaken": "B"},
+
+    {"className": "The British Empire",
+      "classNumber": "HI2324", "classDepartment": "History",
+      "classYearTaken": "2019-2020", "classTermTaken": "C"},
+
+    {"className": "Biotechnology",
+      "classNumber": "BB1035", "classDepartment": "Biology",
+      "classYearTaken": "2019-2020", "classTermTaken": "C"},
+
+    {"className": "Embedded Computing",
+      "classNumber": "ECE2049", "classDepartment": "Electrical and Computer Engineering",
+      "classYearTaken": "2019-2020", "classTermTaken": "C"},
+
+    {"className": "Unified Robotics 1: Sensing",
+      "classNumber": "RBE2002", "classDepartment": "Robotics Engineering",
+      "classYearTaken": "2019-2020", "classTermTaken": "D"},
+
+    {"className": "History of Science: Astronomical",
+      "classNumber": "HI2350", "classDepartment": "History",
+      "classYearTaken": "2019-2020", "classTermTaken": "D"},
+
+    {"className": "Social Science Research: IQP Switzerland",
+      "classNumber": "ID2050", "classDepartment": "Social Science",
+      "classYearTaken": "2019-2020", "classTermTaken": "D"}
   ]
 }
