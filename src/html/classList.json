@@ -86,6 +86,51 @@ classList = {
 
     {"className": "Social Science Research: IQP Switzerland",
       "classNumber": "ID2050", "classDepartment": "Social Science",
-      "classYearTaken": "2019-2020", "classTermTaken": "D"}
+      "classYearTaken": "2019-2020", "classTermTaken": "D"}, 
+
+
+    {"className": "Switzerland IQP",
+      "classNumber": "IQP", "classDepartment": "None",
+      "classYearTaken": "2020-2021", "classTermTaken": "A"},
+
+    {"className": "Algorithms",
+      "classNumber": "CS2223", "classDepartment": "Computer Science",
+      "classYearTaken": "2020-2021", "classTermTaken": "B"},
+
+    {"className": "Computer Networks",
+      "classNumber": "CS3516", "classDepartment": "Computer Science",
+      "classYearTaken": "2020-2021", "classTermTaken": "B"},
+
+    {"className": "Social Implications Of Information Processing",
+      "classNumber": "CS3048", "classDepartment": "Computer Science",
+      "classYearTaken": "2020-2021", "classTermTaken": "B"},
+
+    {"className": "Operating Systems",
+      "classNumber": "CS3013", "classDepartment": "Computer Science",
+      "classYearTaken": "2020-2021", "classTermTaken": "C"},
+
+    {"className": "Control Engineering",
+      "classNumber": "ES3011", "classDepartment": "Engineering Science",
+      "classYearTaken": "2020-2021", "classTermTaken": "C"},
+
+    {"className": "Unitifed Robotics III: Manipulation",
+      "classNumber": "RBE3001", "classDepartment": "History",
+      "classYearTaken": "2020-2021", "classTermTaken": "C"},
+
+    {"className": "Atmospheric and Space Enviroments",
+      "classNumber": "PH2550", "classDepartment": "Physics",
+      "classYearTaken": "2020-2021", "classTermTaken": "D"},
+
+    {"className": "History of Human Rights",
+      "classNumber": "HU3900", "classDepartment": "History",
+      "classYearTaken": "2020-2021", "classTermTaken": "D"},
+
+    {"className": "Unified Robotics IV: Navigation",
+      "classNumber": "RBE3002", "classDepartment": "Robotics Engineering",
+      "classYearTaken": "2020-2021", "classTermTaken": "D"},
+
+    {"className": "Computer Graphics",
+      "classNumber": "CS4731", "classDepartment": "Computer Science",
+      "classYearTaken": "2020-2021", "classTermTaken": "E"}
   ]
 }
