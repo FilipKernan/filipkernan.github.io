@@ -51,8 +51,9 @@
 		    float laplaceA = 0.0;
 			float laplaceB = 0.0;
 			// TODO: change this to be more interesting
-			float newkill = kill * sin(gl_FragCoord.x /resolution.x);
-			float newfeed = feed * sin(gl_FragCoord.y /resolution.y);
+			float killMod = sqrt(pow((0.5 - gl_FragCoord.x /resolution.x), 2.) + pow((0.5 - gl_FragCoord.y /resolution.y), 2.));
+			float newkill = kill * killMod;
+			float newfeed = feed * 1.0/killMod;
 
 			for (int x = -1; x <= 1; x++) {
 				for (int y = -1; y <= 1; y++) {
@@ -75,14 +76,14 @@
 			float B = getB(0, 0);
 
 			float newA = A +
-						diffuseA * laplaceA  -
-						A * B * B +
-						newfeed * (1.0 - A);
+						diffuseA * laplaceA * (1.2 - (gl_FragCoord.y /resolution.y))  -
+						A * B * B  +
+						feed * (1.0 - A);
 
 			float newB = B +
-						diffuseB * laplaceB   +
+						diffuseB * laplaceB * (gl_FragCoord.x /resolution.x)  +
 						A * B * B -
-						(newkill + newfeed) * B;
+						(kill + feed) * B;
 
 
 			if (newB >= 1.0) {
@@ -108,7 +109,7 @@
 		uniform vec2 resolution;
 
 		void main() {
-		  gl_FragColor = vec4( texture2D( uSampler, gl_FragCoord.xy / resolution ).rgb, 1. );
+		  gl_FragColor = vec4( texture2D( uSampler, gl_FragCoord.xy / resolution ).grb, 1. );
 		}
 	</script>
 
