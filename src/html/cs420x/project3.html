@@ -51,10 +51,9 @@
 		    float laplaceA = 0.0;
 			float laplaceB = 0.0;
 			// TODO: change this to be more interesting
-			float killMod = sqrt(pow((0.5 - gl_FragCoord.x /resolution.x), 2.) + pow((0.5 - gl_FragCoord.y /resolution.y), 2.));
-			float newkill = kill * killMod;
-			float newfeed = feed * 1.0/killMod;
-
+			float killMod = 1.;
+			float newkill = kill* abs((gl_FragCoord.x /resolution.x)- 0.5);
+			float newfeed = min(0.0005, feed * abs((gl_FragCoord.y /resolution.y) - 0.5));
 			for (int x = -1; x <= 1; x++) {
 				for (int y = -1; y <= 1; y++) {
 					int location = x + y;
@@ -76,14 +75,14 @@
 			float B = getB(0, 0);
 
 			float newA = A +
-						diffuseA * laplaceA * (1.2 - (gl_FragCoord.y /resolution.y))  -
+						diffuseA * laplaceA   -
 						A * B * B  +
-						feed * (1.0 - A);
+						newfeed * (1.0 - A);
 
 			float newB = B +
-						diffuseB * laplaceB * (gl_FragCoord.x /resolution.x)  +
+						diffuseB * laplaceB   +
 						A * B * B -
-						(kill + feed) * B;
+						(newkill + newfeed) * B;
 
 
 			if (newB >= 1.0) {
@@ -93,7 +92,6 @@
 				newA = 1.0;
 			}
 		    gl_FragColor = vec4( 0.0, newA, newB, 1.0 );
-			//gl_FragColor = vec4( 0.0, newB, newA, 1.0 );
 
 
 		}
@@ -109,7 +107,9 @@
 		uniform vec2 resolution;
 
 		void main() {
-		  gl_FragColor = vec4( texture2D( uSampler, gl_FragCoord.xy / resolution ).grb, 1. );
+			float red = texture2D( uSampler, gl_FragCoord.xy / resolution ).g * 0.25;
+			float blue = texture2D( uSampler, gl_FragCoord.xy / resolution ).b;
+		  	gl_FragColor = vec4(red, 0., blue, 1.5 );
 		}
 	</script>
 
@@ -123,10 +123,10 @@
 			textureBack,
 			textureFront,
 			dimensions = { width: null, height: null },
-			currentDiffuseA = 1.0,
+			currentDiffuseA = 1,
 			currentDiffuseB = 0.5,
 			currentFeed = 0.055,
-			currentKill = 0.062;
+			currentKill = 0.063;
 
 		window.onload = function () {
 			createInteractionPane();
@@ -185,17 +185,9 @@
 			for (i = 0; i < dimensions.width; i++) {
 				for (j = 0; j < dimensions.height; j++) {
 					if (
-						i > dimensions.width / 8 &&
-						i < (2 * dimensions.width) / 8 &&
-						j > dimensions.height / 8 &&
-						j < (3 * dimensions.height) / 8
-					) {
-						poke(i, j, 1.0, textureBack, false);
-					} else if (
-						i > (6 * dimensions.width) / 8 &&
-						i < (7 * dimensions.width) / 8 &&
-						j > (4 * dimensions.height) / 8 &&
-						j < (5 * dimensions.height) / 8
+						Math.pow(i - 0.5 * dimensions.width, 2) +
+							Math.pow(j - 0.5 * dimensions.height, 2) <
+						625
 					) {
 						poke(i, j, 1.0, textureBack, false);
 					} else {
@@ -293,11 +285,6 @@
 			uDiffuseB = gl.getUniformLocation(simulationProgram, "diffuseB");
 			uFeed = gl.getUniformLocation(simulationProgram, "feed");
 			uKill = gl.getUniformLocation(simulationProgram, "kill");
-
-			gl.uniform1f(uDiffuseA, 1.0);
-			gl.uniform1f(uDiffuseB, 0.5);
-			gl.uniform1f(uFeed, 0.055);
-			gl.uniform1f(uKill, 0.062);
 		}
 
 		function createInteractionPane() {
@@ -325,7 +312,7 @@
 
 			diffuseBInput = pane.addInput(PARAMS, "diffuseB", {
 				min: 0.1,
-				max: 1.,
+				max: 1,
 				step: 0.1,
 			});
 
@@ -344,7 +331,7 @@
 			});
 
 			killInput = pane.addInput(PARAMS, "kill", {
-				min: 0.001,
+				min: 0.005,
 				max: 0.07,
 				step: 0.001,
 			});
