@@ -59,6 +59,7 @@
 
 		    uniform sampler2D uSampler;
 		    uniform vec2 resolution;
+			
 
 		    out vec4 color;
 		    void main() {
@@ -69,13 +70,20 @@
 	</script>
 
 	<script id="simulationVertex" type="x-shader/x-vertex">#version 300 es
-		    #define PI_4 3.1415926538/4.
+		    #define PI_2 3.1415926538/2.
+			#define PI 3.1415926538
             precision mediump float;
 
             // input from our feedback TRANSFORM_FEEDBACK
             in vec4 a_pos;
 
             uniform vec2 resolution;
+			uniform float time;				
+			uniform float sensorDist;
+			uniform float agentRotation;
+			uniform float chemDeposit;
+			uniform float sensorSweepPeriod;			
+			uniform float kernalType;
 
             // our chemical layer
             uniform sampler2D uSampler;
@@ -110,15 +118,15 @@
                     vec2 pixel = 1. / resolution;
 
                     // how far ahead should sensing occur? this is fun to play with
-                    vec2 sensorDistance = pixel * 9.;
+                    vec2 sensorDistance = pixel * sensorDist;
 
                     // normalize our {-1,1} vertex coordinates to {0,1} for texture lookups
                     vec2 pos = (1. + a_pos.xy) / 2.;
-
+					float sensorSweep = PI_2 * sensorSweepPeriod;
                     // read sensor informatino at different angles
-                    float left     = readSensor( pos, a_pos.zw, -PI_4, sensorDistance );
+                    float left     = readSensor( pos, a_pos.zw, -sensorSweep, sensorDistance );
                     float forward  = readSensor( pos, a_pos.zw, 0.,    sensorDistance );
-                    float right    = readSensor( pos, a_pos.zw, PI_4,  sensorDistance );
+                    float right    = readSensor( pos, a_pos.zw, sensorSweep,  sensorDistance );
                     
                     // initialize feedback transform output
                     o_vpos = a_pos;
@@ -126,22 +134,22 @@
                     // if most chemical is found to left... 
                     if( left > forward && left > right ) {
                         // rotate left and store in .zw
-                        o_vpos.zw = rotate( o_vpos.zw, -PI_4 );
+                        o_vpos.zw = rotate( o_vpos.zw, -PI*agentRotation );
                     }else if( right > left && right > forward ) { // chemical is to the right
-                        o_vpos.zw = rotate( o_vpos.zw, PI_4 );
+                        o_vpos.zw = rotate( o_vpos.zw, PI*agentRotation );
                     }else if ( right == left ) { // randomly pick a direction
                         float rand = fract(sin(a_pos.x)*100000.0);
                         if( rand > .5 ) {
-                        o_vpos.zw = rotate( o_vpos.zw, PI_4 );
+                        o_vpos.zw = rotate( o_vpos.zw, PI*agentRotation );
                         }else{
-                        o_vpos.zw = rotate( o_vpos.zw, -PI_4 );
+                        o_vpos.zw = rotate( o_vpos.zw, -PI*agentRotation );
                         }
                     } // else keep going the same direction, no change required
                     
                     // move our agent in our new direction by one pixel
                     o_vpos.xy += o_vpos.zw * pixel;
                     
-                    gl_PointSize = 1.;
+                    gl_PointSize = kernalType;
 
                     // position is for fragment shader rendering, don't need to include heading
                     gl_Position = vec4( a_pos.x, a_pos.y, 0., 1. );
@@ -150,12 +158,13 @@
 
 	<script id="simulationFragment" type="x-shader/x-fragment">#version 300 es
 		    precision mediump float;
+			uniform float chemDeposit;
 
 		    out vec4 o_frag;
 
 		    void main() {
 
-		      o_frag = vec4( 0.5, 0., 0.5, .05);
+		      o_frag = vec4( 0.5, 0., 0.5, chemDeposit);
 		    }
 	</script>
 
@@ -176,25 +185,33 @@
 			simulationProgram,
 			quad,
 			dimensions = { width: null, height: null },
-			agentCount = 5000000,
+			agentCount = 10000000,
             ddProgram, 
-            ddPosition;
+            ddPosition, 
+			sensorDist = 20,
+			agentRotation = 1/4, 
+			chemDeposit = 0.1,
+			sensorSweepPeriod = 0.25,
+			kernalType = 1,
+			uSensorDist,
+			uAgentRotation,
+			uChemDeposit,
+			uSensorSweepPeriod,
+			uKernalType,
+			time = 0.;
 
 		window.onload = function () {
 			const canvas = document.getElementById("gl");
 			gl = canvas.getContext("webgl2");
-			const dim =
-				window.innerWidth < window.innerHeight
-					? window.innerWidth
-					: window.innerHeight;
-			canvas.width = dimensions.width = dim;
-			canvas.height = dimensions.height = dim;
+			canvas.width = dimensions.width = window.innerWidth;
+			canvas.height = dimensions.height = window.innerHeight;
 
 			// define drawing area of canvas. bottom corner, width / height
 			gl.viewport(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight);
-
 			makeCopyPhase();
 			makeSimulationPhase();
+			createInteractionPane();
+
             makeDecayDiffusePhase()
 			makeTextures();
 			render();
@@ -262,6 +279,74 @@
 			gl.vertexAttribPointer(copyPosition, 2, gl.FLOAT, false, 0, 0);
 		}
 
+		function createInteractionPane() {
+			const pane = new Tweakpane.Pane({
+				title: "Interactions",
+				expanded: true,
+			});
+
+			const PARAMS = {
+				"Sensor Distance": 20.0,
+				"Agent Rotation Amount": 0.25,
+				"Chemical Deposit": 0.1,
+				"Sensor Sweep Period": 0.25,
+				"Kernal Type": 1,
+			};
+
+			sensorDistInput = pane.addInput(PARAMS, "Sensor Distance", {
+				min: 1,
+				max: 100,
+				step: 1,
+			});
+
+			sensorDistInput.on("change", function (ev) {
+				sensorDist = ev.value;
+			});
+
+			agentRotInput = pane.addInput(PARAMS, "Agent Rotation Amount", {
+				min: 0.1,
+				max: 1.,
+				step: 0.1,
+			});
+
+			agentRotInput.on("change", function (ev) {
+				agentRotation = ev.value;
+			});
+
+			chemDepInput = pane.addInput(PARAMS, "Chemical Deposit", {
+				min: 0.005,
+				max: 0.5,
+				step: 0.001,
+			});
+
+			chemDepInput.on("change", function (ev) {
+				chemDeposit = ev.value;
+			});
+
+			sensorSweepInput = pane.addInput(PARAMS, "Sensor Sweep Period", {
+				min: 0.00,
+				max: 0.9,
+				step: 0.001,
+			});
+
+			sensorSweepInput.on("change", function (ev) {
+				sensorSweepPeriod = ev.value;
+			});
+
+			kernalTypeInput = pane.addInput(PARAMS, "Kernal Type", {
+				min: 0.,
+				max: 2.,
+				step: .25,
+			});
+
+			kernalTypeInput.on("change", function (ev) {
+				kernalType = ev.value;
+			});
+			
+
+
+		}
+		
 		function makeSimulationPhase() {
 			makeSimulationShaders();
 			makeSimulationBuffer();
@@ -338,6 +423,22 @@
 		function makeSimulationUniforms() {
 			uRes = gl.getUniformLocation(simulationProgram, "resolution");
 			gl.uniform2f(uRes, gl.drawingBufferWidth, gl.drawingBufferHeight);
+
+
+			uTime = gl.getUniformLocation(simulationProgram, "time");
+			gl.uniform1f(uTime, time);
+
+			uSensorDist = gl.getUniformLocation(simulationProgram, "sensorDist");
+			uAgentRotation = gl.getUniformLocation(simulationProgram, "agentRotation");
+			uChemDeposit = gl.getUniformLocation(simulationProgram, "chemDeposit");
+			uSensorSweepPeriod = gl.getUniformLocation(simulationProgram, "sensorSweepPeriod");
+			uKernalType = gl.getUniformLocation(simulationProgram, "kernalType");
+
+			gl.uniform1f(uSensorDist, sensorDist);
+			gl.uniform1f(uAgentRotation, agentRotation);
+			gl.uniform1f(uChemDeposit, chemDeposit);
+			gl.uniform1f(uSensorSweepPeriod, sensorSweepPeriod);
+			gl.uniform1f(uKernalType, kernalType);
 
 			// get position attribute location in shader
 			simulationPosition = gl.getAttribLocation(
@@ -468,8 +569,19 @@
 		function render() {
             window.requestAnimationFrame( render )
                 
+
+			
+			
+			
+
                 /* AGENT-BASED SIMULATION */
             gl.useProgram( simulationProgram )
+
+			gl.uniform1f(uSensorDist, sensorDist);
+			gl.uniform1f(uAgentRotation, agentRotation);
+			gl.uniform1f(uChemDeposit, chemDeposit);
+			gl.uniform1f(uSensorSweepPeriod, sensorSweepPeriod);
+			gl.uniform1f(uKernalType, kernalType);
 
             gl.bindFramebuffer( gl.FRAMEBUFFER, framebuffer )
 
@@ -530,19 +642,22 @@
             let tmp = buffer1;  buffer1 = buffer2;  buffer2 = tmp;
         }
 	</script>
+
+<script src="https://cdn.jsdelivr.net/npm/tweakpane@3.0.7/dist/tweakpane.min.js"></script>
+
 </html>
 
 
 <!-- Things to change 
-        sensor distance
-        agent rotation amount
-        time changes sensor rotation
-            - period of sensor sweep
-        chemical desposit
-            - 0.05 to 0.5
-        Defusion kernal
-            - Laplace
-            - gaussian
-            - box blur
+        rename things
+		create presets
+		
+
+	Things changed
+		point size 
+		sensor rotation 
+		agent rotation
+		sensor distance
+		chem deposit
 
 -->
