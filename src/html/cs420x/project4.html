@@ -82,8 +82,8 @@
 			uniform float sensorDist;
 			uniform float agentRotation;
 			uniform float chemDeposit;
-			uniform float sensorSweepPeriod;			
-			uniform float kernalType;
+			uniform float maxSensorSweep;			
+			uniform float agentSize;
 
             // our chemical layer
             uniform sampler2D uSampler;
@@ -122,11 +122,11 @@
 
                     // normalize our {-1,1} vertex coordinates to {0,1} for texture lookups
                     vec2 pos = (1. + a_pos.xy) / 2.;
-					float sensorSweep = PI_2 * sensorSweepPeriod;
+					float sensorSweep = PI_2 * maxSensorSweep;
                     // read sensor informatino at different angles
-                    float left     = readSensor( pos, a_pos.zw, -sensorSweep, sensorDistance );
+                    float left     = readSensor( pos, a_pos.zw, -sensorSweep*sin(0.001 * time), sensorDistance );
                     float forward  = readSensor( pos, a_pos.zw, 0.,    sensorDistance );
-                    float right    = readSensor( pos, a_pos.zw, sensorSweep,  sensorDistance );
+                    float right    = readSensor( pos, a_pos.zw, sensorSweep*cos(0.001 * time),  sensorDistance );
                     
                     // initialize feedback transform output
                     o_vpos = a_pos;
@@ -149,7 +149,7 @@
                     // move our agent in our new direction by one pixel
                     o_vpos.xy += o_vpos.zw * pixel;
                     
-                    gl_PointSize = kernalType;
+                    gl_PointSize = agentSize;
 
                     // position is for fragment shader rendering, don't need to include heading
                     gl_Position = vec4( a_pos.x, a_pos.y, 0., 1. );
@@ -185,19 +185,19 @@
 			simulationProgram,
 			quad,
 			dimensions = { width: null, height: null },
-			agentCount = 10000000,
+			agentCount = 5000000,
             ddProgram, 
             ddPosition, 
 			sensorDist = 20,
 			agentRotation = 1/4, 
 			chemDeposit = 0.1,
-			sensorSweepPeriod = 0.25,
-			kernalType = 1,
+			maxSensorSweep = 0.5,
+			agentSize = 1,
 			uSensorDist,
 			uAgentRotation,
 			uChemDeposit,
-			uSensorSweepPeriod,
-			uKernalType,
+			uMaxSensorSweep,
+			uAgentSize,
 			time = 0.;
 
 		window.onload = function () {
@@ -289,8 +289,8 @@
 				"Sensor Distance": 20.0,
 				"Agent Rotation Amount": 0.25,
 				"Chemical Deposit": 0.1,
-				"Sensor Sweep Period": 0.25,
-				"Kernal Type": 1,
+				"Max Sensor Sweep": 0.5,
+				"Agent Size": 1,
 			};
 
 			sensorDistInput = pane.addInput(PARAMS, "Sensor Distance", {
@@ -323,27 +323,69 @@
 				chemDeposit = ev.value;
 			});
 
-			sensorSweepInput = pane.addInput(PARAMS, "Sensor Sweep Period", {
+			sensorSweepInput = pane.addInput(PARAMS, "Max Sensor Sweep", {
 				min: 0.00,
 				max: 0.9,
 				step: 0.001,
 			});
 
 			sensorSweepInput.on("change", function (ev) {
-				sensorSweepPeriod = ev.value;
+				maxSensorSweep = ev.value;
 			});
 
-			kernalTypeInput = pane.addInput(PARAMS, "Kernal Type", {
+			agentSizeInput = pane.addInput(PARAMS, "Agent Size", {
 				min: 0.,
 				max: 2.,
 				step: .25,
 			});
 
-			kernalTypeInput.on("change", function (ev) {
-				kernalType = ev.value;
+			agentSizeInput.on("change", function (ev) {
+				agentSize = ev.value;
 			});
 			
 
+			preset1 = pane.addButton({title: "preset 1"});
+
+			preset1.on('click', () => {
+				agentSize = 1.;
+				maxSensorSweep = 0.5;
+				chemDeposit = 0.01;
+				agentRotation = 0.5;
+				sensorDist = 50;
+			});
+
+
+			preset2 = pane.addButton({title: "preset 2"});
+
+			preset2.on('click', () => {
+				agentSize = .75;
+				maxSensorSweep = 0.9;
+				chemDeposit = 0.25;
+				agentRotation = 0.75;
+				sensorDist = 75;
+			});
+
+			preset3 = pane.addButton({title: "preset 3"});
+
+			preset3.on('click', () => {
+				agentSize = .5;
+				maxSensorSweep = 0.7;
+				chemDeposit = 0.1;
+				agentRotation = 0.5;
+				sensorDist = 20;
+			});
+
+
+
+			preset4 = pane.addButton({title: "preset 4"});
+
+			preset4.on('click', () => {
+				agentSize = .5;
+				maxSensorSweep = 0.5;
+				chemDeposit = 0.2;
+				agentRotation = 0.25;
+				sensorDist = 20;
+			});
 
 		}
 		
@@ -431,14 +473,14 @@
 			uSensorDist = gl.getUniformLocation(simulationProgram, "sensorDist");
 			uAgentRotation = gl.getUniformLocation(simulationProgram, "agentRotation");
 			uChemDeposit = gl.getUniformLocation(simulationProgram, "chemDeposit");
-			uSensorSweepPeriod = gl.getUniformLocation(simulationProgram, "sensorSweepPeriod");
-			uKernalType = gl.getUniformLocation(simulationProgram, "kernalType");
+			uMaxSensorSweep = gl.getUniformLocation(simulationProgram, "maxSensorSweep");
+			uAgentSize = gl.getUniformLocation(simulationProgram, "agentSize");
 
 			gl.uniform1f(uSensorDist, sensorDist);
 			gl.uniform1f(uAgentRotation, agentRotation);
 			gl.uniform1f(uChemDeposit, chemDeposit);
-			gl.uniform1f(uSensorSweepPeriod, sensorSweepPeriod);
-			gl.uniform1f(uKernalType, kernalType);
+			gl.uniform1f(uMaxSensorSweep, maxSensorSweep);
+			gl.uniform1f(uAgentSize, agentSize);
 
 			// get position attribute location in shader
 			simulationPosition = gl.getAttribLocation(
@@ -580,8 +622,8 @@
 			gl.uniform1f(uSensorDist, sensorDist);
 			gl.uniform1f(uAgentRotation, agentRotation);
 			gl.uniform1f(uChemDeposit, chemDeposit);
-			gl.uniform1f(uSensorSweepPeriod, sensorSweepPeriod);
-			gl.uniform1f(uKernalType, kernalType);
+			gl.uniform1f(uMaxSensorSweep, maxSensorSweep);
+			gl.uniform1f(uAgentSize, agentSize);
 
             gl.bindFramebuffer( gl.FRAMEBUFFER, framebuffer )
 
@@ -650,7 +692,7 @@
 
 <!-- Things to change 
         rename things
-		create presets
+		
 		
 
 	Things changed
