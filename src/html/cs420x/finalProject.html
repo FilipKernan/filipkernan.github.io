@@ -45,7 +45,7 @@
           sum += get(0,1)   *  .2;
           sum += get(-1,1)  *  .05;
         
-          vec2 pos = gl_FragCoord.xy / resolution;
+          vec2 pos = (gl_FragCoord.xy + vec2(5, 5)) / resolution;
           vec4 tex = texture( uSampler, pos );
           color = vec4( vec3(tex.grb * .85 ), .25 );
         }
@@ -764,6 +764,13 @@
         - add motion blur
 
         - add additional post processing
+
+
+		A 2.67
+		B -1.04
+		C -1.04
+		D -1.3
+
 
  -->
 
