@@ -36,18 +36,18 @@
         out vec4 color;
         void main() {
           float sum = get(0,0) - 1.;
-          //sum += get(-1,0)  *  .2;
-          //sum += get(-1,-1) *  .05;
-          //sum += get(0,-1)  *  .2;
-          //sum += get(1,-1)  *  .05;       
-          //sum += get(1,0)   *  .2;
-          //sum += get(1,1)   *  .05;
-          //sum += get(0,1)   *  .2;
-          //sum += get(-1,1)  *  .05;
+          sum += get(-1,0)  *  .2;
+          sum += get(-1,-1) *  .05;
+          sum += get(0,-1)  *  .2;
+          sum += get(1,-1)  *  .05;       
+          sum += get(1,0)   *  .2;
+          sum += get(1,1)   *  .05;
+          sum += get(0,1)   *  .2;
+          sum += get(-1,1)  *  .05;
         
           vec2 pos = gl_FragCoord.xy / resolution;
           vec4 tex = texture( uSampler, pos );
-          color = vec4( vec3(sum * .9), .25 );
+          color = vec4( vec3(tex.grb * .85 ), .25 );
         }
         </script>
 
@@ -129,6 +129,31 @@
             }
 	</script>
 
+    <script id='feedback' type='x-shader/x-fragment'>
+        #ifdef GL_ES
+        precision mediump float;
+        #endif
+      
+        uniform float time;
+        uniform float feedbackAmount;
+        uniform vec2  resolution;
+        
+        // for our live video feed
+        uniform sampler2D videoTexture;
+        // get access to the last frame of video
+        uniform sampler2D feedbackTexture;
+      
+        void main() {
+          vec2 pos = gl_FragCoord.xy / resolution;
+          vec3 video = texture2D( videoTexture, pos ).rgb;
+          vec3 prior = texture2D( feedbackTexture, pos ).rgb;
+          
+          // our final output is a combination of the live video signal
+          // and our feedback
+          gl_FragColor = vec4( (video * .1 + prior * 0.75), 1. );
+        }
+      </script>
+
 	<script id="simulationFragment" type="x-shader/x-fragment">#version 300 es
 		    precision mediump float;
 			uniform float cValue;
@@ -137,7 +162,7 @@
 
 		    void main() {
 
-		      o_frag = vec4( 0.5, 0., 0.5, 0.5);
+		      o_frag = vec4( 0.5, 0., 0.5, 0.1);
 		    }
 	</script>
 
@@ -173,6 +198,8 @@
 			uAgentSize,
 			time = 0., 
             pane;
+            let feedbackProgram,uVideoTexture, uFeedbackTexture, uFeedback,
+                videoTexture, textureLoaded;
 
 		window.onload = function () {
 			const canvas = document.getElementById("gl");
@@ -183,9 +210,41 @@
 			// define drawing area of canvas. bottom corner, width / height
 			gl.viewport(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight);
 			makeCopyPhase();
+
+			
+            // // create vertex shader
+            // shaderScript = document.getElementById('copyVertex')
+            // shaderSource = shaderScript.text
+            // // create shader object
+            // const vertexShader = gl.createShader( gl.VERTEX_SHADER )
+            // // define source text for our shader
+            // gl.shaderSource( vertexShader, shaderSource )
+            // // compile shader
+            // gl.compileShader( vertexShader )
+
+
+            // shaderScript = document.getElementById("feedback");
+			// shaderSource = shaderScript.text;
+            // const feedbackFragmentShader = gl.createShader( gl.FRAGMENT_SHADER )
+            // gl.shaderSource( feedbackFragmentShader, shaderSource )
+            // gl.compileShader( feedbackFragmentShader )
+            // console.log( gl.getShaderInfoLog( feedbackFragmentShader ) )
+            // feedbackProgram = gl.createProgram()
+            // gl.attachShader( feedbackProgram, vertexShader )
+            // gl.attachShader( feedbackProgram, feedbackFragmentShader )
+
+            // gl.linkProgram( feedbackProgram )
+            // gl.useProgram( feedbackProgram )
+
+            // uFeedbackTexture = gl.getUniformLocation( feedbackProgram, 'feedbackTexture' )
+
+            // uRes = gl.getUniformLocation( feedbackProgram, 'resolution' )
+            // gl.uniform2f( uRes, gl.drawingBufferWidth, gl.drawingBufferHeight )
+
+
+
 			makeSimulationPhase();
 			createInteractionPane();
-
             makeDecayDiffusePhase()
 			makeTextures();
 			render();
@@ -669,6 +728,32 @@
 
                 // swap vertex buffers 
             let tmp = buffer1;  buffer1 = buffer2;  buffer2 = tmp;
+
+
+
+            // in our shaders, read from texBack, which is where we poked to
+            // gl.activeTexture( gl.TEXTURE1 )
+            // gl.bindTexture( gl.TEXTURE_2D, textureBack )
+            // gl.uniform1i( uFeedbackTexture, 1 )
+            // // run shader
+            // gl.drawArrays( gl.TRIANGLES, 0, 6 )
+
+            // // swap our front and back textures
+            // tmp = textureFront
+            // textureFront = textureBack
+            // textureBack = tmp
+
+            // // use the default framebuffer object by passing null
+            // gl.bindFramebuffer( gl.FRAMEBUFFER, null )
+            // // gl.viewport(0, 0, size, size )
+            // // select the texture we would like to draw to the screen.
+            // // note that webgl does not allow you to write to / read from the
+            // // same texture in a single render pass. Because of the swap, we're
+            // // displaying the state of our simulation ****before**** this render pass (frame)
+            // gl.activeTexture( gl.TEXTURE0 )
+            // gl.bindTexture( gl.TEXTURE_2D, textureFront )
+        
+
         }
 	</script>
 
