@@ -35,19 +35,11 @@
         
         out vec4 color;
         void main() {
-          float sum = get(0,0) - 1.;
-          sum += get(-1,0)  *  .2;
-          sum += get(-1,-1) *  .05;
-          sum += get(0,-1)  *  .2;
-          sum += get(1,-1)  *  .05;       
-          sum += get(1,0)   *  .2;
-          sum += get(1,1)   *  .05;
-          sum += get(0,1)   *  .2;
-          sum += get(-1,1)  *  .05;
-        
-          vec2 pos = (gl_FragCoord.xy + vec2(5, 5)) / resolution;
-          vec4 tex = texture( uSampler, pos );
-          color = vec4( vec3(tex.grb * .85 ), .25 );
+          
+		  vec2 pos = (gl_FragCoord.xy + vec2(5, 5)) / resolution;
+          vec2 offset_pos = (gl_FragCoord.xy + vec2(-5, -5)) / resolution;
+          vec4 tex = (texture( uSampler, offset_pos ) + texture( uSampler, pos ));
+          color = vec4( vec3(tex.grb * .4 ), .25 );
         }
         </script>
 
@@ -761,7 +753,7 @@
 
 <!-- 
     TODO: 
-        - add motion blur
+
 
         - add additional post processing
 
