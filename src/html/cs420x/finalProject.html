@@ -41,7 +41,7 @@
 		  vec2 offset_pos2 = (gl_FragCoord.xy + vec2(100, -100)) / resolution;
 		  vec2 offset_pos3 = (gl_FragCoord.xy + vec2(-100, 100)) / resolution;
           vec4 tex = (texture( uSampler, offset_pos ) + texture( uSampler, pos ) + texture( uSampler, offset_pos2 ) + texture( uSampler, offset_pos3 ));
-          color = vec4( vec3(tex.grb * .19 ), .25 );
+          color = vec4( vec3(tex.bgr * .19 ), .15 );
         }
         </script>
 
@@ -123,30 +123,7 @@
             }
 	</script>
 
-    <script id='feedback' type='x-shader/x-fragment'>
-        #ifdef GL_ES
-        precision mediump float;
-        #endif
-      
-        uniform float time;
-        uniform float feedbackAmount;
-        uniform vec2  resolution;
-        
-        // for our live video feed
-        uniform sampler2D videoTexture;
-        // get access to the last frame of video
-        uniform sampler2D feedbackTexture;
-      
-        void main() {
-          vec2 pos = gl_FragCoord.xy / resolution;
-          vec3 video = texture2D( videoTexture, pos ).rgb;
-          vec3 prior = texture2D( feedbackTexture, pos ).rgb;
-          
-          // our final output is a combination of the live video signal
-          // and our feedback
-          gl_FragColor = vec4( (video * .1 + prior * 0.75), 1. );
-        }
-      </script>
+
 
 	<script id="simulationFragment" type="x-shader/x-fragment">#version 300 es
 		    precision mediump float;
@@ -156,7 +133,7 @@
 
 		    void main() {
 
-		      o_frag = vec4( 0.5, 0., 0.5, .2);
+		      o_frag = vec4( 0., 0.5, 0.5, .2);
 		    }
 	</script>
 
