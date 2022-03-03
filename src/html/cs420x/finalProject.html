@@ -41,7 +41,7 @@
 		  vec2 offset_pos2 = (gl_FragCoord.xy + vec2(100, -100)) / resolution;
 		  vec2 offset_pos3 = (gl_FragCoord.xy + vec2(-100, 100)) / resolution;
           vec4 tex = (texture( uSampler, offset_pos ) + texture( uSampler, pos ) + texture( uSampler, offset_pos2 ) + texture( uSampler, offset_pos3 ));
-          color = vec4( vec3(tex.bgr * .19 ), .15 ) + texture( uSampler, gl_FragCoord.xy / resolution ) * 0.2;
+          color = vec4( vec3(tex.bgr * .19 ), .15 ) + texture( uSampler, gl_FragCoord.xy / resolution ) * 0.01;
         }
         </script>
 
