@@ -752,7 +752,7 @@
 
 			/* flame */
 			if (resetFlames) {
-				time -=  Math.max(0.025, (2 + Math.random()) * Math.random()*(time/3000));
+				time -=  Math.max(0.025, (2 + Math.random()) * Math.random()*(3000/time));
 				if (time < 3000){
 					resetFlames = false;
 				}
