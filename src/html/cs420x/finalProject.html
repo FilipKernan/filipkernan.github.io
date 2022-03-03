@@ -21,7 +21,7 @@
 	</script>
 
 
-    <script id='ddFragment' type='x-shader/x-fragment'>#version 300 es
+    <script id='feedbackFragment' type='x-shader/x-fragment'>#version 300 es
         #ifdef GL_ES
         precision mediump float;
         #endif  
@@ -41,9 +41,65 @@
 		  vec2 offset_pos2 = (gl_FragCoord.xy + vec2(100, -100)) / resolution;
 		  vec2 offset_pos3 = (gl_FragCoord.xy + vec2(-100, 100)) / resolution;
           vec4 tex = (texture( uSampler, offset_pos ) + texture( uSampler, pos ) + texture( uSampler, offset_pos2 ) + texture( uSampler, offset_pos3 ));
-          color = vec4( vec3(tex.bgr * .19 ), .15 );
+          color = vec4( vec3(tex.bgr * .19 ), .15 ) + texture( uSampler, gl_FragCoord.xy / resolution ) * 0.2;
         }
         </script>
+
+
+
+		<script id='flameFragment' type='x-shader/x-fragment'>#version 300 es
+			#ifdef GL_ES
+			precision mediump float;
+			#endif  
+			
+			uniform sampler2D uSampler;
+			uniform vec2 resolution;
+			uniform float time;
+
+			float random (in vec2 st) {
+				return fract(sin(dot(st.xy,
+									 vec2(12.9898,78.233)))
+							 * 43758.5453123);
+			}
+			
+			float get(float x, float y) {
+				return texture( uSampler, ( gl_FragCoord.xy + vec2(x, y) ) / resolution ).r;
+			}
+
+			float noise (in vec2 st) {
+				vec2 i = floor(st);
+				vec2 f = fract(st);
+			
+				// Four corners in 2D of a tile
+				float a = random(i);
+				float b = random(i + vec2(1.0, 0.0));
+				float c = random(i + vec2(0.0, 1.0));
+				float d = random(i + vec2(1.0, 1.0));
+			
+				// Smooth Interpolation
+			
+				// Cubic Hermine Curve.  Same as SmoothStep()
+				vec2 u = f*f*(3.0-2.0*f);
+				// u = smoothstep(0.,1.,f);
+			
+				// Mix 4 coorners percentages
+				return mix(a, b, u.x) +
+						(c - a)* u.y * (1.0 - u.x) +
+						(d - b) * u.x * u.y;
+			}
+			
+			out vec4 color;
+			void main() {
+			  float offset =  -1. - 100. * ((get(0., -1.)+ get(0., -10.) + get(0., -15.))/3.) * max(0.1, 3. * sin(time * 0.1 * fract(gl_FragCoord.x/resolution.x)) + 
+			  	2. * sin((3000. - time) * 0.01 * fract(gl_FragCoord.x/resolution.x) + 500.) + 
+				  0.5 * sin(time * 0.1 * fract(gl_FragCoord.x/resolution.x) + 3.14159) + 2.5 * sin(250. * fract(gl_FragCoord.x/resolution.x)));
+			  vec2 pos = (gl_FragCoord.xy + vec2(0, offset)) / resolution;
+			  if (get(0.,  offset) < .2) {
+			  	vec4 tex = (texture( uSampler, pos ));
+			  	color = vec4( vec3(tex.gr * 0.75, tex.b * 0.8), .15 );
+			  } 
+			}
+			</script>
 
 	<!-- render to screen shader -->
 	<script id="copyFragment" type="x-shader/x-fragment">#version 300 es
@@ -133,7 +189,7 @@
 
 		    void main() {
 
-		      o_frag = vec4( 0., 0.5, 0.5, .2);
+		      o_frag = vec4( 0., 0.5, 0.5, .1);
 		    }
 	</script>
 
@@ -152,11 +208,13 @@
 			framebuffer,
 			copyProgram,
 			simulationProgram,
+			flameProgram,
 			quad,
 			dimensions = { width: null, height: null },
 			agentCount = 1000000,
-            ddProgram, 
-            ddPosition, 
+            feedbackProgram, 
+            feedbackPosition, 
+			flamePosition, 
 			aValue = -2.01,
 			bValue = -2.53, 
 			cValue = 1.61,
@@ -167,9 +225,10 @@
 			uCValue,
 			uDValue,
 			uAgentSize,
-			time = 0., 
-            pane;
-            let feedbackProgram,uVideoTexture, uFeedbackTexture, uFeedback,
+			time = 4000., 
+            pane,
+			resetFlames = false;
+            let uVideoTexture, uFeedbackTexture, uFeedback,
                 videoTexture, textureLoaded;
 
 		window.onload = function () {
@@ -183,40 +242,11 @@
 			makeCopyPhase();
 
 			
-            // // create vertex shader
-            // shaderScript = document.getElementById('copyVertex')
-            // shaderSource = shaderScript.text
-            // // create shader object
-            // const vertexShader = gl.createShader( gl.VERTEX_SHADER )
-            // // define source text for our shader
-            // gl.shaderSource( vertexShader, shaderSource )
-            // // compile shader
-            // gl.compileShader( vertexShader )
-
-
-            // shaderScript = document.getElementById("feedback");
-			// shaderSource = shaderScript.text;
-            // const feedbackFragmentShader = gl.createShader( gl.FRAGMENT_SHADER )
-            // gl.shaderSource( feedbackFragmentShader, shaderSource )
-            // gl.compileShader( feedbackFragmentShader )
-            // console.log( gl.getShaderInfoLog( feedbackFragmentShader ) )
-            // feedbackProgram = gl.createProgram()
-            // gl.attachShader( feedbackProgram, vertexShader )
-            // gl.attachShader( feedbackProgram, feedbackFragmentShader )
-
-            // gl.linkProgram( feedbackProgram )
-            // gl.useProgram( feedbackProgram )
-
-            // uFeedbackTexture = gl.getUniformLocation( feedbackProgram, 'feedbackTexture' )
-
-            // uRes = gl.getUniformLocation( feedbackProgram, 'resolution' )
-            // gl.uniform2f( uRes, gl.drawingBufferWidth, gl.drawingBufferHeight )
-
-
 
 			makeSimulationPhase();
 			createInteractionPane();
-            makeDecayDiffusePhase()
+            makeFeedbackPhase();
+			makeFlamePhase();
 			makeTextures();
 			render();
 		};
@@ -587,12 +617,12 @@
 			framebuffer = gl.createFramebuffer();
 		}
 
-        function makeDecayDiffusePhase() {
-            makeDecayDiffuseShaders()
-            makeDecayDiffuseUniforms()
+        function makeFeedbackPhase() {
+            makeFeedbackShaders()
+            makeFeedbackUniforms()
         }
 
-        function makeDecayDiffuseShaders() {
+        function makeFeedbackShaders() {
             let shaderScript = document.getElementById('copyVertex')
             let shaderSource = shaderScript.text
             let vertexShader = gl.createShader( gl.VERTEX_SHADER )
@@ -600,7 +630,7 @@
             gl.compileShader( vertexShader )
 
             // create fragment shader
-            shaderScript = document.getElementById('ddFragment')
+            shaderScript = document.getElementById('feedbackFragment')
             shaderSource = shaderScript.text
             const drawFragmentShader = gl.createShader( gl.FRAGMENT_SHADER )
             gl.shaderSource( drawFragmentShader, shaderSource )
@@ -608,20 +638,20 @@
             console.log( gl.getShaderInfoLog(drawFragmentShader) )
 
             // create shader program  
-            ddProgram = gl.createProgram()
-            gl.attachShader( ddProgram, vertexShader )
-            gl.attachShader( ddProgram, drawFragmentShader )
+            feedbackProgram = gl.createProgram()
+            gl.attachShader( feedbackProgram, vertexShader )
+            gl.attachShader( feedbackProgram, drawFragmentShader )
             
-            gl.linkProgram( ddProgram )
-            gl.useProgram( ddProgram )
+            gl.linkProgram( feedbackProgram )
+            gl.useProgram( feedbackProgram )
         }  
 
-        function makeDecayDiffuseUniforms() {
-            uResDD = gl.getUniformLocation( ddProgram, 'resolution' )
+        function makeFeedbackUniforms() {
+            uResDD = gl.getUniformLocation( feedbackProgram, 'resolution' )
             gl.uniform2f( uResDD, dimensions.width, dimensions.height )
 
             // get position attribute location in shader
-            ddPosition = gl.getAttribLocation( ddProgram, 'a_pos' )
+            feedbackPosition = gl.getAttribLocation( feedbackProgram, 'a_pos' )
             // enable the attribute
             gl.enableVertexAttribArray( copyPosition )
             // this will point to the vertices in the last bound array buffer.
@@ -629,6 +659,61 @@
             // our vertices. Each vertex will have to floats (one for x, one for y)
             gl.vertexAttribPointer( copyPosition, 2, gl.FLOAT, false, 0,0 )
         }
+
+
+
+		function makeFlamePhase() {
+            console.log("creating flame")
+			makeFlameShaders();
+            makeFlameUniforms();
+        }
+
+        function makeFlameShaders() {
+            let shaderScript = document.getElementById('copyVertex')
+            let shaderSource = shaderScript.text
+            let vertexShader = gl.createShader( gl.VERTEX_SHADER )
+            gl.shaderSource( vertexShader, shaderSource )
+            gl.compileShader( vertexShader )
+
+            // create fragment shader
+            shaderScript = document.getElementById('flameFragment')
+            shaderSource = shaderScript.text
+            const drawFragmentShader = gl.createShader( gl.FRAGMENT_SHADER )
+            gl.shaderSource( drawFragmentShader, shaderSource )
+            gl.compileShader( drawFragmentShader )
+			if (!gl.getShaderParameter(drawFragmentShader, gl.COMPILE_STATUS)) {
+				alert(gl.getShaderInfoLog(drawFragmentShader));
+				return null;
+			}
+            console.log( gl.getShaderInfoLog(drawFragmentShader) )
+
+            // create shader program  
+            flameProgram = gl.createProgram()
+            gl.attachShader( flameProgram, vertexShader )
+            gl.attachShader( flameProgram, drawFragmentShader )
+            
+            gl.linkProgram( flameProgram )
+            gl.useProgram( flameProgram )
+        }  
+
+        function makeFlameUniforms() {
+            
+			uResDD = gl.getUniformLocation( flameProgram, 'resolution' )
+            gl.uniform2f( uResDD, dimensions.width, dimensions.height )
+
+			uTime = gl.getUniformLocation(flameProgram, "time");
+			gl.uniform1f(uTime, time);
+
+            // get position attribute location in shader
+            flamePosition = gl.getAttribLocation( flameProgram, 'a_pos' )
+            // enable the attribute
+            gl.enableVertexAttribArray( copyPosition )
+            // this will point to the vertices in the last bound array buffer.
+            // In this example, we only use one array buffer, where we're storing 
+            // our vertices. Each vertex will have to floats (one for x, one for y)
+            gl.vertexAttribPointer( copyPosition, 2, gl.FLOAT, false, 0,0 )
+        }
+
 
 		function render() {
             window.requestAnimationFrame( render )
@@ -666,19 +751,42 @@
             textureFront = textureBack
             textureBack = _tmp
 
-            /* Decay / Diffuse */
+            /* feedback */
             gl.framebufferTexture2D( gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, textureFront, 0 )
 
             gl.activeTexture( gl.TEXTURE0 )
             gl.bindTexture(   gl.TEXTURE_2D, textureBack )
 
-            gl.useProgram( ddProgram )
+            gl.useProgram( feedbackProgram )
 
             gl.bindBuffer( gl.ARRAY_BUFFER, quad )
-            gl.vertexAttribPointer( ddPosition, 2, gl.FLOAT, false, 0,0 )
+            gl.vertexAttribPointer( feedbackPosition, 2, gl.FLOAT, false, 0,0 )
 
             gl.drawArrays( gl.TRIANGLES, 0, 6 )
-            /* END Decay / Diffuse */
+			
+            /* END feedback */
+
+			
+
+			/* flame */
+			
+			time++;
+			
+            gl.framebufferTexture2D( gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, textureFront, 0 )
+
+            gl.activeTexture( gl.TEXTURE0 )
+            gl.bindTexture(   gl.TEXTURE_2D, textureBack )
+
+            gl.useProgram( flameProgram )
+			gl.uniform1f(uTime, time);
+
+
+            gl.bindBuffer( gl.ARRAY_BUFFER, quad )
+            gl.vertexAttribPointer( flamePosition, 2, gl.FLOAT, false, 0,0 )
+
+            gl.drawArrays( gl.TRIANGLES, 0, 6 )
+            /* END flame */
+
 
             /* COPY TO SCREEN */
             // use the default framebuffer object by passing null
@@ -702,27 +810,7 @@
 
 
 
-            // in our shaders, read from texBack, which is where we poked to
-            // gl.activeTexture( gl.TEXTURE1 )
-            // gl.bindTexture( gl.TEXTURE_2D, textureBack )
-            // gl.uniform1i( uFeedbackTexture, 1 )
-            // // run shader
-            // gl.drawArrays( gl.TRIANGLES, 0, 6 )
-
-            // // swap our front and back textures
-            // tmp = textureFront
-            // textureFront = textureBack
-            // textureBack = tmp
-
-            // // use the default framebuffer object by passing null
-            // gl.bindFramebuffer( gl.FRAMEBUFFER, null )
-            // // gl.viewport(0, 0, size, size )
-            // // select the texture we would like to draw to the screen.
-            // // note that webgl does not allow you to write to / read from the
-            // // same texture in a single render pass. Because of the swap, we're
-            // // displaying the state of our simulation ****before**** this render pass (frame)
-            // gl.activeTexture( gl.TEXTURE0 )
-            // gl.bindTexture( gl.TEXTURE_2D, textureFront )
+            
         
 
         }
