@@ -745,8 +745,18 @@
 			
 
 			/* flame */
+			if (resetFlames) {
+				time--;
+				if (time < 3000){
+					resetFlames = false;
+				}
+			} else {
+				time++;
+				if (time > 6000) {
+					resetFlames = true;
+				}
+			}
 			
-			time++;
 			
             gl.framebufferTexture2D( gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, textureFront, 0 )
 
