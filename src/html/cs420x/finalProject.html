@@ -73,7 +73,7 @@
 				float x_rand_coord = 50.  * (gl_FragCoord.x/resolution.x);
 				float i = floor(x_rand_coord ) ;  // integer
 				float f = fract(x_rand_coord ) ;  // fraction
-				float offset =  -1. - 100. * ((get(0., -1.)+ get(0., -10.) + get(0., -15.))/3.) * mix(random(i), random(i + 1.0), smoothstep(0.2,1.,f)) *
+				float offset =  -1. - 100. * ((get(0., -1.)+ get(0., -10.) + get(0., -15.))/3.) * mix(random(i) *(1.5 + sin(time * 0.01 * (gl_FragCoord.x/resolution.x))), random(i + 1.0), smoothstep(0.2,1.,f)) *
 					(max(1.5, 5. * sin( time * 0.1 * (gl_FragCoord.x/resolution.x))) + max(0.4, cos(time *0.25 * (gl_FragCoord.x/resolution.x)+ 3.)) + max(1.,  sin(time * 0.134 * random(gl_FragCoord.x/resolution.x) + 8.)));
 				vec2 pos = (gl_FragCoord.xy + vec2(0, offset)) / resolution;
 				if (get(0.,  offset) + get(0.,  offset-2.)  > .6) {
@@ -752,12 +752,12 @@
 
 			/* flame */
 			if (resetFlames) {
-				time--;
+				time -=  Math.max(0.025, (2 + Math.random()) * Math.random()*(time/3000));
 				if (time < 3000){
 					resetFlames = false;
 				}
 			} else {
-				time++;
+				time += Math.max(0.025, (Math.random() + 3)* Math.random()* (time/6000));
 				if (time > 6000) {
 					resetFlames = true;
 				}
