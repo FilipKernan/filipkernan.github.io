@@ -90,9 +90,9 @@
 			
 			out vec4 color;
 			void main() {
-			  float offset =  -1. - 100. * ((get(0., -1.)+ get(0., -10.) + get(0., -15.))/3.) * max(0.1, 3. * sin(time * 0.1 * fract(gl_FragCoord.x/resolution.x)) + 
-			  	2. * sin((3000. - time) * 0.01 * fract(gl_FragCoord.x/resolution.x) + 500.) + 
-				  0.5 * sin(time * 0.1 * fract(gl_FragCoord.x/resolution.x) + 3.14159) + 2.5 * sin(250. * fract(gl_FragCoord.x/resolution.x)));
+			  float offset =  -1. - 50. * ((get(0., -1.)+ get(0., -10.) + get(0., -15.))/3.) * max(0.1, 3. * sin(time * 0.1 * fract(gl_FragCoord.x/resolution.x)) + 
+			  	2. * cos(time * 0.4 * fract(gl_FragCoord.x/resolution.x) + 5.) + 
+				  1.44 * sin(time * 0.0075  + 2.) + 2.5 * sin(250. * fract(gl_FragCoord.x/resolution.x)));
 			  vec2 pos = (gl_FragCoord.xy + vec2(0, offset)) / resolution;
 			  if (get(0.,  offset) < .2) {
 			  	vec4 tex = (texture( uSampler, pos ));
