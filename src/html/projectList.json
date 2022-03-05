@@ -1,8 +1,20 @@
 projectList = {
     "project": [
         {
-            "projectName": "Operational BB-8", "completed" : false,
-             "link" : "../html/projects/bb-8.html" 
+            "projectName": "Swarm Robotics MQP", "completed" : false,
+             "link" : "../html/projects/MQP.html" 
+        },
+        {
+            "projectName": "Graphics Simulations", "completed" : true,
+             "link" : "../html/projects/graphicsSims.html" 
+        },
+        {
+            "projectName": "RBE 3002 final project", "completed" : true,
+             "link" : "../html/projects/rbe3002.html" 
+        },
+        {
+            "projectName": "RBE 3001 final project", "completed" : true,
+             "link" : "../html/projects/rbe3001.html" 
         },
         {
             "projectName": "3d Printer Modifications", "completed" : true,

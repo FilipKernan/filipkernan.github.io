@@ -128,9 +128,35 @@ classList = {
     {"className": "Unified Robotics IV: Navigation",
       "classNumber": "RBE3002", "classDepartment": "Robotics Engineering",
       "classYearTaken": "2020-2021", "classTermTaken": "D"},
-
     {"className": "Computer Graphics",
       "classNumber": "CS4731", "classDepartment": "Computer Science",
-      "classYearTaken": "2020-2021", "classTermTaken": "E"}
+      "classYearTaken": "2020-2021", "classTermTaken": "E"},
+      
+    {"className": "Foundations Of Computer Science",
+      "classNumber": "CS3133", "classDepartment": "Computer Science",
+      "classYearTaken": "2021-2022", "classTermTaken": "A"},
+
+
+    {"className": "Introduction To Artificial Intelligence",
+      "classNumber": "CS4341", "classDepartment": "Computer Science",
+      "classYearTaken": "2021-2022", "classTermTaken": "A"},
+
+    {"className": "Machine Learning",
+      "classNumber": "CS4342", "classDepartment": "Computer Science",
+      "classYearTaken": "2021-2022", "classTermTaken": "B"},
+
+    {"className": "Engineering Innovation And Entrepreneurship",
+      "classNumber": "ETR1100", "classDepartment": "Entrepreneurship",
+      "classYearTaken": "2021-2022", "classTermTaken": "B"},
+
+    {"className": "Graphical Simulation Of Physical Systems",
+      "classNumber": "CS420X", "classDepartment": "Computer Science",
+      "classYearTaken": "2021-2022", "classTermTaken": "C"},
+
+    {"className": "Applied Statistics I",
+      "classNumber": "MA2611", "classDepartment": "Math",
+      "classYearTaken": "2021-2022", "classTermTaken": "C"}
+
+    
   ]
 }
