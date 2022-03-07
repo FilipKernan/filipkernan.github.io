@@ -17,6 +17,10 @@ projectList = {
              "link" : "../html/projects/rbe3001.html" 
         },
         {
+            "projectName": "BB-8 Operational Replica", "completed" : true,
+             "link" : "../html/projects/bb-8.html" 
+        },
+        {
             "projectName": "3d Printer Modifications", "completed" : true,
              "link" : "../html/projects/3dPrinters.html" 
         },

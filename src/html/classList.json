@@ -1,161 +1,183 @@
 classList = {
   "class": [
-    {"className": "Accelerated Introduction to Program Design",
-      "classNumber": "CS1102", "classDepartment": "Computer Science",
-      "classYearTaken": "2018-2019", "classTermTaken": "A"},
-    {"className": "Calculus III",
-      "classNumber": "MA1023", "classDepartment": "Math",
-      "classYearTaken": "2018-2019", "classTermTaken": "A"},
-    {"className": "Principles of Physics-Mechanics",
-      "classNumber": "PH1111", "classDepartment": "Physics",
-      "classYearTaken": "2018-2019", "classTermTaken": "A"},
-    {"className": "3-Dimensional and Spatial Design",
-      "classNumber": "AR100X", "classDepartment": "Art",
-      "classYearTaken": "2018-2019", "classTermTaken": "B"},
+
+
+
+    {"className": "Unitifed Robotics III: Manipulation",
+      "classNumber": "RBE3001", "classDepartment": "Robotics Engineering",
+      "classYearTaken": "2020-2021" },
+
+    {"className": "Unified Robotics IV: Navigation",
+      "classNumber": "RBE3002", "classDepartment": "Robotics Engineering",
+      "classYearTaken": "2020-2021" },
+
+    {"className": "Graphical Simulation Of Physical Systems",
+      "classNumber": "CS420X", "classDepartment": "Computer Science",
+      "classYearTaken": "2021-2022" },
+
+    {"className": "Introduction To Artificial Intelligence",
+      "classNumber": "CS4341", "classDepartment": "Computer Science",
+      "classYearTaken": "2021-2022" },
+
+    {"className": "Machine Learning",
+      "classNumber": "CS4342", "classDepartment": "Computer Science",
+      "classYearTaken": "2021-2022" },
+
+    {"className": "Software Engineering",
+      "classNumber": "CS3733", "classDepartment": "Computer Science",
+      "classYearTaken": "2019-2020" },
+
+
+    {"className": "Atmospheric and Space Enviroments",
+      "classNumber": "PH2550", "classDepartment": "Physics",
+      "classYearTaken": "2020-2021" },
+
+    {"className": "Unified Robotics 1: Actuation",
+      "classNumber": "RBE2001", "classDepartment": "Robotics Engineering",
+      "classYearTaken": "2019-2020" },
+
+    {"className": "Unified Robotics II: Sensing",
+      "classNumber": "RBE2002", "classDepartment": "Robotics Engineering",
+      "classYearTaken": "2019-2020" },
+
     {"className": "Introduction to Robotics",
       "classNumber": "RBE1001", "classDepartment": "Robotics Engineering",
-      "classYearTaken": "2018-2019", "classTermTaken": "B"},
+      "classYearTaken": "2018-2019" },
+
+    {"className": "Accelerated Introduction to Program Design",
+      "classNumber": "CS1102", "classDepartment": "Computer Science",
+      "classYearTaken": "2018-2019" },
+    {"className": "Calculus III",
+      "classNumber": "MA1023", "classDepartment": "Math",
+      "classYearTaken": "2018-2019" },
+    {"className": "Principles of Physics-Mechanics",
+      "classNumber": "PH1111", "classDepartment": "Physics",
+      "classYearTaken": "2018-2019" },
+    {"className": "3-Dimensional and Spatial Design",
+      "classNumber": "AR100X", "classDepartment": "Art",
+      "classYearTaken": "2018-2019" },
+    
     {"className": "Object-Oriented Design Concepts",
       "classNumber": "CS2102", "classDepartment": "Computer Science",
-      "classYearTaken": "2018-2019", "classTermTaken": "B"},
+      "classYearTaken": "2018-2019" },
     {"className": "Systems Programming Concepts",
       "classNumber": "CS2303", "classDepartment": "Computer Science",
-      "classYearTaken": "2018-2019", "classTermTaken": "C"},
+      "classYearTaken": "2018-2019" },
     {"className": "Introduction to Digital Circuit Design",
       "classNumber": "ECE2029", "classDepartment":
       "Electrical and Computer Engineering",
-      "classYearTaken": "2018-2019", "classTermTaken": "C"},
+      "classYearTaken": "2018-2019" },
     {"className": "Calculus IV",
       "classNumber": "MA1024", "classDepartment": "Math",
-      "classYearTaken": "2018-2019", "classTermTaken": "C"},
+      "classYearTaken": "2018-2019" },
     {"className": "General Physics-Electricity and Magnetism",
       "classNumber": "PH1120", "classDepartment": "Physics",
-      "classYearTaken": "2018-2019", "classTermTaken": "D"},
+      "classYearTaken": "2018-2019" },
     {"className": "Ordinary Differential Equations",
       "classNumber": "MA2051", "classDepartment": "Math",
-      "classYearTaken": "2018-2019", "classTermTaken": "D"},
+      "classYearTaken": "2018-2019" },
     {"className": "The British Empire",
       "classNumber": "HI2324", "classDepartment": "History",
-      "classYearTaken": "2018-2019", "classTermTaken": "D"},
+      "classYearTaken": "2018-2019" },
 
 
 
     {"className": "Introduction to Statics",
       "classNumber": "ES2501", "classDepartment": "Engineering Science",
-      "classYearTaken": "2019-2020", "classTermTaken": "A"},
+      "classYearTaken": "2019-2020" },
 
-    {"className": "Unified Robotics 1: Actuation",
-      "classNumber": "RBE2001", "classDepartment": "Robotics Engineering",
-      "classYearTaken": "2019-2020", "classTermTaken": "A"},
+
 
     {"className": "Intro to the History of Science and Technology",
       "classNumber": "HI1330", "classDepartment": "History",
-      "classYearTaken": "2019-2020", "classTermTaken": "A"},
+      "classYearTaken": "2019-2020" },
 
-    {"className": "Software Engineering",
-      "classNumber": "CS3733", "classDepartment": "Computer Science",
-      "classYearTaken": "2019-2020", "classTermTaken": "B"},
+   
 
     {"className": "Linear Algebra",
       "classNumber": "MA2071", "classDepartment": "Math",
-      "classYearTaken": "2019-2020", "classTermTaken": "B"},
+      "classYearTaken": "2019-2020" },
 
     {"className": "Elements of Writing",
       "classNumber": "WR1010", "classDepartment": "Writing",
-      "classYearTaken": "2019-2020", "classTermTaken": "B"},
+      "classYearTaken": "2019-2020" },
 
     {"className": "The British Empire",
       "classNumber": "HI2324", "classDepartment": "History",
-      "classYearTaken": "2019-2020", "classTermTaken": "C"},
+      "classYearTaken": "2019-2020" },
 
     {"className": "Biotechnology",
       "classNumber": "BB1035", "classDepartment": "Biology",
-      "classYearTaken": "2019-2020", "classTermTaken": "C"},
+      "classYearTaken": "2019-2020" },
 
     {"className": "Embedded Computing",
       "classNumber": "ECE2049", "classDepartment": "Electrical and Computer Engineering",
-      "classYearTaken": "2019-2020", "classTermTaken": "C"},
+      "classYearTaken": "2019-2020" },
 
-    {"className": "Unified Robotics 1: Sensing",
-      "classNumber": "RBE2002", "classDepartment": "Robotics Engineering",
-      "classYearTaken": "2019-2020", "classTermTaken": "D"},
+    
 
     {"className": "History of Science: Astronomical",
       "classNumber": "HI2350", "classDepartment": "History",
-      "classYearTaken": "2019-2020", "classTermTaken": "D"},
+      "classYearTaken": "2019-2020" },
 
     {"className": "Social Science Research: IQP Switzerland",
       "classNumber": "ID2050", "classDepartment": "Social Science",
-      "classYearTaken": "2019-2020", "classTermTaken": "D"}, 
+      "classYearTaken": "2019-2020" }, 
 
 
     {"className": "Switzerland IQP",
       "classNumber": "IQP", "classDepartment": "None",
-      "classYearTaken": "2020-2021", "classTermTaken": "A"},
+      "classYearTaken": "2020-2021" },
 
     {"className": "Algorithms",
       "classNumber": "CS2223", "classDepartment": "Computer Science",
-      "classYearTaken": "2020-2021", "classTermTaken": "B"},
+      "classYearTaken": "2020-2021" },
 
     {"className": "Computer Networks",
       "classNumber": "CS3516", "classDepartment": "Computer Science",
-      "classYearTaken": "2020-2021", "classTermTaken": "B"},
+      "classYearTaken": "2020-2021" },
 
     {"className": "Social Implications Of Information Processing",
       "classNumber": "CS3048", "classDepartment": "Computer Science",
-      "classYearTaken": "2020-2021", "classTermTaken": "B"},
+      "classYearTaken": "2020-2021" },
 
     {"className": "Operating Systems",
       "classNumber": "CS3013", "classDepartment": "Computer Science",
-      "classYearTaken": "2020-2021", "classTermTaken": "C"},
+      "classYearTaken": "2020-2021" },
 
     {"className": "Control Engineering",
       "classNumber": "ES3011", "classDepartment": "Engineering Science",
-      "classYearTaken": "2020-2021", "classTermTaken": "C"},
+      "classYearTaken": "2020-2021" },
 
-    {"className": "Unitifed Robotics III: Manipulation",
-      "classNumber": "RBE3001", "classDepartment": "History",
-      "classYearTaken": "2020-2021", "classTermTaken": "C"},
 
     {"className": "Atmospheric and Space Enviroments",
       "classNumber": "PH2550", "classDepartment": "Physics",
-      "classYearTaken": "2020-2021", "classTermTaken": "D"},
+      "classYearTaken": "2020-2021" },
 
     {"className": "History of Human Rights",
       "classNumber": "HU3900", "classDepartment": "History",
-      "classYearTaken": "2020-2021", "classTermTaken": "D"},
+      "classYearTaken": "2020-2021" },
 
-    {"className": "Unified Robotics IV: Navigation",
-      "classNumber": "RBE3002", "classDepartment": "Robotics Engineering",
-      "classYearTaken": "2020-2021", "classTermTaken": "D"},
+
     {"className": "Computer Graphics",
       "classNumber": "CS4731", "classDepartment": "Computer Science",
-      "classYearTaken": "2020-2021", "classTermTaken": "E"},
+      "classYearTaken": "2020-2021" },
       
     {"className": "Foundations Of Computer Science",
       "classNumber": "CS3133", "classDepartment": "Computer Science",
-      "classYearTaken": "2021-2022", "classTermTaken": "A"},
+      "classYearTaken": "2021-2022" },
 
 
-    {"className": "Introduction To Artificial Intelligence",
-      "classNumber": "CS4341", "classDepartment": "Computer Science",
-      "classYearTaken": "2021-2022", "classTermTaken": "A"},
 
-    {"className": "Machine Learning",
-      "classNumber": "CS4342", "classDepartment": "Computer Science",
-      "classYearTaken": "2021-2022", "classTermTaken": "B"},
 
     {"className": "Engineering Innovation And Entrepreneurship",
       "classNumber": "ETR1100", "classDepartment": "Entrepreneurship",
-      "classYearTaken": "2021-2022", "classTermTaken": "B"},
+      "classYearTaken": "2021-2022" },
 
-    {"className": "Graphical Simulation Of Physical Systems",
-      "classNumber": "CS420X", "classDepartment": "Computer Science",
-      "classYearTaken": "2021-2022", "classTermTaken": "C"},
 
     {"className": "Applied Statistics I",
       "classNumber": "MA2611", "classDepartment": "Math",
-      "classYearTaken": "2021-2022", "classTermTaken": "C"}
+      "classYearTaken": "2021-2022" }
 
     
   ]
