@@ -1,7 +1,7 @@
 projectList = {
     "project": [
         {
-            "projectName": "Swarm Robotics MQP", "completed" : false,
+            "projectName": "Swarm Robotics MQP", "completed" : true,
              "link" : "../html/projects/MQP.html" 
         },
         {
@@ -17,7 +17,7 @@ projectList = {
              "link" : "../html/projects/rbe3001.html" 
         },
         {
-            "projectName": "BB-8 Operational Replica", "completed" : true,
+            "projectName": "BB-8 Operational Replica", "completed" : false,
              "link" : "../html/projects/bb-8.html" 
         },
         {
